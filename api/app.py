@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from functions import TextPreprocessor
 
 app = Flask(__name__)
 
@@ -15,7 +16,7 @@ pipeline = load_model()
 
 @app.route('/')
 def home():
-    return "Welcome to the Text Classification API!"
+    return render_template('home.html')
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
@@ -28,8 +29,9 @@ def predict():
             
             single_entry = pd.DataFrame({'Textos_espanol': sentences})
             predictions = pipeline.predict(single_entry)
+            predicted_probabilities = pipeline.predict_proba(single_entry)
 
-            return render_template('predict.html', predictions=zip(sentences, predictions))
+            return render_template('predict.html', predictions=zip(sentences, predictions, predicted_probabilities))
 
         except Exception as e:
             return render_template('predict.html', error=str(e))
@@ -64,7 +66,7 @@ def retrain():
         y_pred = pipeline.predict(X_test)
         report = classification_report(y_test, y_pred, output_dict=True)
 
-        return render_template('retrain.html', message='Model retrained successfully.', report=report)
+        return render_template('retrain.html', message='Modelo reentrenado satisfactoriamente !', report=report)
 
         # except Exception as e:
         #     return render_template('retrain.html', error=str(e))

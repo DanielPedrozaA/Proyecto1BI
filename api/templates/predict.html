@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Predict Text Label</title>
-</head>
-<body>
-    <h1>Predict the Label of Text</h1>
+{% extends "base.html" %}
+
+{% block title %}Predict Text Label{% endblock %}
+
+{% block content %}
+    <h1>Predecir la categoria de un texto</h1>
     <form method="POST">
-        <label for="sentences">Enter Sentences:</label><br>
-        <textarea name="sentences" rows="5" cols="50"></textarea><br>
+        <label for="sentences">Introduce cada oracion separada de un salto de linea [enter]:</label><br>
+        <textarea name="sentences" rows="10" cols="80"></textarea><br>
         <input type="submit" value="Predict">
     </form>
 
@@ -17,12 +15,22 @@
     {% endif %}
 
     {% if predictions %}
-        <h2>Predictions:</h2>
+        <h2>Predicciones:</h2>
         <ul>
-            {% for sentence, prediction in predictions %}
-                <li>{{ sentence }}: {{ prediction }}</li>
+            {% for sentence, prediction, probability in predictions %}
+                <li>
+                    <strong>{{ sentence }}</strong>:<br>
+                    Predicción: <b>Categoría {{ prediction }}</b><br>
+                    Probabilidades:<br>
+                    <ul>
+                        <li>Categoría 3: {{ (probability[0] * 100) | round(2) }}%</li>
+                        <li>Categoría 4: {{ (probability[1] * 100) | round(2) }}%</li>
+                        <li>Categoría 5: {{ (probability[2] * 100) | round(2) }}%</li>
+                    </ul>
+                </li>
+                <hr>
             {% endfor %}
         </ul>
     {% endif %}
-</body>
-</html>
+
+{% endblock %}
