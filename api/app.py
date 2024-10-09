@@ -18,6 +18,62 @@ pipeline = load_model()
 def home():
     return render_template('home.html')
 
+@app.route('/api/predict', methods=['POST'])    
+def api_predict():
+    global pipeline
+    try:
+        data = request.json
+        if 'sentences' not in data:
+            return jsonify({'error': 'Por favor, proporciona una lista de oraciones.'}), 400
+        
+        single_entry = pd.DataFrame({'Textos_espanol': data['sentences']})
+        predictions = pipeline.predict(single_entry)
+        predicted_probabilities = pipeline.predict_proba(single_entry)
+
+        results = [
+            {
+                'sentence': sentence,
+                'prediction': int(pred),  
+                'probabilities': [float(prob) for prob in prob] 
+            }
+            for sentence, pred, prob in zip(data['sentences'], predictions, predicted_probabilities)
+        ]
+
+        return jsonify({'predictions': results})
+    except Exception as e:
+        return jsonify({'error': f'Error al realizar la prediccion: {str(e)}'}), 500
+
+@app.route('/api/retrain', methods=['POST'])
+def api_retrain():
+    global pipeline
+    if 'file' not in request.files:
+        return jsonify({'error': 'Por favor, proporciona un archivo Excel.'}), 400
+    
+    file = request.files['file']
+    try:
+        df = pd.read_excel(file)
+        
+        if 'Textos_espanol' not in df or 'sdg' not in df:
+            return jsonify({'error': 'El archivo Excel debe contener las columnas Textos_espanol y sdg.'}), 400
+        
+        X = df[['Textos_espanol']]
+        y = df['sdg']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+        pipeline.fit(X_train, y_train)
+
+        joblib.dump(pipeline, MODEL_PATH)
+        
+        pipeline = load_model()
+
+        y_pred = pipeline.predict(X_test)
+        report = classification_report(y_test, y_pred, output_dict=True)
+
+        return jsonify({'message': 'El modelo se ha reentrenado con exito.', 'report': report})
+    
+    except Exception as e:
+        return jsonify({'error': f'Error al reentrenar el modelo: {str(e)}'}), 500
+
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     global pipeline
@@ -67,9 +123,6 @@ def retrain():
         report = classification_report(y_test, y_pred, output_dict=True)
 
         return render_template('retrain.html', message='Modelo reentrenado satisfactoriamente !', report=report)
-
-        # except Exception as e:
-        #     return render_template('retrain.html', error=str(e))
 
     return render_template('retrain.html')
 
