@@ -31,7 +31,9 @@ API basada en Flask para clasificar oraciones de acuerdo a los Objetivos de Desa
 
 1. Clona este repositorio
 2. Navega al directorio del proyecto
-3. Instala los paquetes requeridos:
+3. Activar ambiente con python 3.8, 3.9, 3.10
+4. Instala los paquetes requeridos:
+
 
 ```
 pip install -r requirements.txt
@@ -42,7 +44,8 @@ pip install -r requirements.txt
 Para iniciar la aplicación Flask, ejecuta:
 
 ```
-python api/app.py
+cd api/
+python app.py
 ```
 
 La aplicación estará disponible en `http://127.0.0.1:5000`.
