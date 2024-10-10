@@ -164,7 +164,7 @@ La aplicación estará disponible en `http://127.0.0.1:5000`.
 - **URL**: `/predict`
 - **Métodos**: GET, POST
 - **Descripción**: Interfaz web para clasificar oraciones de acuerdo a los ODS.
-- <img width="767" alt="image" src="https://github.com/user-attachments/assets/b76610a5-554a-48cf-928f-5cda4f467c9a">
+<img width="767" alt="image" src="https://github.com/user-attachments/assets/b76610a5-554a-48cf-928f-5cda4f467c9a">
 
 
 
@@ -173,7 +173,7 @@ La aplicación estará disponible en `http://127.0.0.1:5000`.
 - **URL**: `/retrain`
 - **Métodos**: GET, POST
 - **Descripción**: Interfaz web para reentrenar el modelo con un nuevo conjunto de datos.
-- <img width="808" alt="image" src="https://github.com/user-attachments/assets/6def6189-9960-4674-9a10-9cca9fb14688">
+<img width="808" alt="image" src="https://github.com/user-attachments/assets/6def6189-9960-4674-9a10-9cca9fb14688">
 
 
 
