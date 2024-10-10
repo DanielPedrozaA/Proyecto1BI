@@ -71,7 +71,7 @@ La aplicación estará disponible en `http://127.0.0.1:5000`.
   ```
 - **Explicación**: En este ejemplo, estamos enviando dos oraciones para clasificar. La API analizará cada oración y devolverá la clasificación ODS correspondiente para cada una.
 - **Respuesta**:
-    ```
+    ```json
     {
         "predictions": [
             {
@@ -116,7 +116,7 @@ La aplicación estará disponible en `http://127.0.0.1:5000`.
   ```
 - **Explicación**: En este ejemplo, estamos enviando un archivo Excel llamado 'ODScat_345_SMALL.xlsx' para reentrenar el modelo. Este archivo debe contener nuevos ejemplos de oraciones y sus clasificaciones ODS correspondientes. La API utilizará estos datos para actualizar y mejorar el modelo de clasificación.
 - **Respuesta**:
-    ```
+    ```json
     {
     "message": "El modelo se ha reentrenado con \u00e9xito.",
         "report": {
